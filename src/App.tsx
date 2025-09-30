@@ -15,6 +15,20 @@ const projects = [
   { name: "Medical Control", url: "https://musala001.github.io/Medical-Control/" },
 ];
 
+const techStack = [
+  { name: "Java", icon: "☕" },
+  { name: "C++", icon: "⚡" },
+  { name: "Python", icon: "🐍" },
+  { name: "JavaScript", icon: "📜" },
+  { name: "C", icon: "🔧" },
+  { name: "React JS", icon: "⚛️" },
+  { name: "Node JS", icon: "🟢" },
+  { name: "CSS", icon: "🎨" },
+  { name: "HTML", icon: "🌐" },
+  { name: "Android Studio", icon: "🤖" },
+  { name: "Tailwind CSS", icon: "💨" }
+];
+
 export default function App() {
   const [displayText, setDisplayText] = useState("");
   const [cursorVisible, setCursorVisible] = useState(true);
@@ -144,8 +158,8 @@ export default function App() {
       {/* Navigation */}
       <nav className="holographic-nav">
         <div className="nav-brand">
-          <div className="nav-logo">MG</div>
-          <span>MUSALA_GROUP</span>
+          <div className="nav-logo">MN</div>
+          <span>MUSALA NDOUVHADA</span>
         </div>
         <div className="nav-links">
           {['home', 'about', 'projects', 'education', 'contact'].map((section) => (
@@ -179,15 +193,14 @@ export default function App() {
                 <span className="cyber-text">FINAL-YEAR COMPUTER SCIENCE & MATHEMATICS</span>
               </div>
               <div className="subtitle-line">
-                <span className="neon-accent">FOUNDER & CEO</span>
-                <span className="cyber-text"> OF </span>
-                <span className="neon-accent">MUSALA GROUP</span>
+                <span className="neon-accent">FOUNDER & DIRECTOR</span>
+                <span className="cyber-text"> OF MUSALA GROUP SOFTWARE SOLUTIONS</span>
               </div>
             </div>
 
             <div className="hero-stats">
               <div className="stat-item">
-                <div className="stat-value">11</div>
+                <div className="stat-value">20</div>
                 <div className="stat-label">ACTIVE PROJECTS</div>
               </div>
               <div className="stat-item">
@@ -201,13 +214,13 @@ export default function App() {
             </div>
 
             <div className="hero-actions">
-              <button className="holographic-btn">
+              <a href="#projects" className="holographic-btn">
                 <span>EXPLORE PORTFOLIO</span>
                 <div className="btn-glow"></div>
-              </button>
-              <button className="cyber-btn">
+              </a>
+              <a href="#contact" className="cyber-btn">
                 <span>INITIATE CONTACT</span>
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -236,10 +249,22 @@ export default function App() {
                     and technology at Wits.
                   </p>
                   <p className="futuristic-text">
-                    As the founder and CEO of <span className="neon-accent">Musala Group</span>, I lead a software 
-                    company dedicated to creating innovative digital solutions for small businesses, schools, and communities. 
-                    Our mission is to leverage technology to improve education, accessibility, and business efficiency.
+                    As a software developer and entrepreneur, I create innovative digital solutions for small businesses, 
+                    schools, and communities. My mission is to leverage technology to improve education, accessibility, 
+                    and business efficiency.
                   </p>
+
+                  <div className="tech-stack">
+                    <h3>TECH STACK</h3>
+                    <div className="tech-grid">
+                      {techStack.map((tech, index) => (
+                        <div key={tech.name} className="tech-item">
+                          <span className="tech-icon">{tech.icon}</span>
+                          <span className="tech-name">{tech.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
                 <div className="visual-content">
                   <div className="hologram-display">
@@ -260,6 +285,18 @@ export default function App() {
                         <span className="data-label">CYBERSECURITY</span>
                         <div className="data-bar">
                           <div className="data-fill" style={{width: '70%'}}></div>
+                        </div>
+                      </div>
+                      <div className="data-point">
+                        <span className="data-label">WEB DEVELOPMENT</span>
+                        <div className="data-bar">
+                          <div className="data-fill" style={{width: '90%'}}></div>
+                        </div>
+                      </div>
+                      <div className="data-point">
+                        <span className="data-label">MOBILE DEVELOPMENT</span>
+                        <div className="data-bar">
+                          <div className="data-fill" style={{width: '75%'}}></div>
                         </div>
                       </div>
                     </div>
@@ -291,7 +328,7 @@ export default function App() {
                 </div>
                 <div className="card-body">
                   <div className="project-description">
-                    Innovative solution showcasing cutting-edge technology and user-centric design.
+                    Innovative solution showcasing some of the my software and design.
                   </div>
                 </div>
                 <div className="card-footer">
@@ -328,6 +365,7 @@ export default function App() {
                   <span className="tech-tag">AI/ML</span>
                   <span className="tech-tag">CYBERSECURITY</span>
                   <span className="tech-tag">ADVANCED MATHEMATICS</span>
+                  <span className="tech-tag">SOFTWARE ENGINEERING</span>
                 </div>
               </div>
             </div>
@@ -342,6 +380,7 @@ export default function App() {
                 <div className="timeline-tech">
                   <span className="tech-tag">FOUNDATION EDUCATION</span>
                   <span className="tech-tag">STEM FOCUS</span>
+                  <span className="tech-tag">MATHEMATICS & SCIENCE</span>
                 </div>
               </div>
             </div>
@@ -361,7 +400,7 @@ export default function App() {
             <div className="contact-card">
               <div className="contact-icon">📧</div>
               <h3>EMAIL</h3>
-              <a href="solomonndouvhada@gmail.com">solomonndouvhada@gmail.com</a>
+              <a href="mailto:solomonndouvhada@gmail.com">solomonndouvhada@gmail.com</a>
               <div className="contact-glow"></div>
             </div>
             <div className="contact-card">
@@ -389,8 +428,8 @@ export default function App() {
         <div className="footer-content">
           <div className="footer-main">
             <div className="footer-brand">
-              <div className="footer-logo">MG</div>
-              <span>MUSALA GROUP</span>
+              <div className="footer-logo">MN</div>
+              <span>MUSALA NDOUVHADA</span>
             </div>
             <div className="footer-text">
               © {new Date().getFullYear()} MUSALA NDOUVHADA. ALL SYSTEMS OPERATIONAL.
