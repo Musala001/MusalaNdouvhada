@@ -257,7 +257,7 @@ export default function App() {
                   <div className="tech-stack">
                     <h3>TECH STACK</h3>
                     <div className="tech-grid">
-                      {techStack.map((tech, index) => (
+                      {techStack.map((tech) => (
                         <div key={tech.name} className="tech-item">
                           <span className="tech-icon">{tech.icon}</span>
                           <span className="tech-name">{tech.name}</span>
