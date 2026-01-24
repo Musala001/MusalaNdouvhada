@@ -25,7 +25,6 @@ const techStack = [
   { name: "Node JS", icon: "🟢" },
   { name: "CSS", icon: "🎨" },
   { name: "HTML", icon: "🌐" },
-  { name: "Android Studio", icon: "🤖" },
   { name: "Tailwind CSS", icon: "💨" }
 ];
 
@@ -161,7 +160,7 @@ export default function App() {
           
           <div className="education-timeline">
             <div className="education-item">
-              <div className="education-date">2024 - Present</div>
+              <div className="education-date">2026 - Present</div>
               <div className="education-content">
                 <h3>Honours in Computer Science</h3>
                 <p className="education-institution">University of the Witwatersrand</p>
@@ -174,7 +173,7 @@ export default function App() {
             </div>
             
             <div className="education-item">
-              <div className="education-date">2020 - 2023</div>
+              <div className="education-date">2023 - 2025</div>
               <div className="education-content">
                 <h3>BSc Computer Science & Mathematics</h3>
                 <p className="education-institution">University of the Witwatersrand</p>
