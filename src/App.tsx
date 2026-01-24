@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import "./App.css";
 
 const projects = [
@@ -30,149 +30,29 @@ const techStack = [
 ];
 
 export default function App() {
-  const [displayText, setDisplayText] = useState("");
-  const [cursorVisible, setCursorVisible] = useState(true);
   const [activeSection, setActiveSection] = useState("home");
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const fullText = "MUSALA NDOUVHADA";
-
-  // Typewriter effect
-  useEffect(() => {
-    let currentIndex = 0;
-    const interval = setInterval(() => {
-      if (currentIndex <= fullText.length) {
-        setDisplayText(fullText.slice(0, currentIndex));
-        currentIndex++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Cursor blink effect
-  useEffect(() => {
-    const cursorInterval = setInterval(() => {
-      setCursorVisible(v => !v);
-    }, 500);
-    return () => clearInterval(cursorInterval);
-  }, []);
-
-  // Particle animation
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particles: Array<{
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-      color: string;
-    }> = [];
-
-    for (let i = 0; i < 100; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2 + 1,
-        speedX: (Math.random() - 0.5) * 2,
-        speedY: (Math.random() - 0.5) * 2,
-        color: `hsl(${Math.random() * 60 + 180}, 100%, 70%)`
-      });
-    }
-
-    const animate = () => {
-      ctx.fillStyle = 'rgba(5, 5, 15, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach((particle, index) => {
-        particle.x += particle.speedX;
-        particle.y += particle.speedY;
-
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.y > canvas.height) particle.y = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = particle.color;
-        ctx.fill();
-
-        // Connect particles
-        for (let j = index + 1; j < particles.length; j++) {
-          const dx = particle.x - particles[j].x;
-          const dy = particle.y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 100) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(0, 243, 255, ${0.2 * (1 - distance / 100)})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      });
-
-      requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   return (
     <div className="app-container">
-      {/* Advanced Particle Background */}
-      <canvas ref={canvasRef} className="particle-canvas" />
-      
-      {/* Holographic Grid */}
-      <div className="holographic-grid" />
-      
-      {/* Floating Geometry */}
-      <div className="floating-geometry">
-        <div className="geo-1"></div>
-        <div className="geo-2"></div>
-        <div className="geo-3"></div>
-      </div>
-
       {/* Navigation */}
-      <nav className="holographic-nav">
-        <div className="nav-brand">
-          <div className="nav-logo">MN</div>
-          <span>MUSALA NDOUVHADA</span>
-        </div>
-        <div className="nav-links">
-          {['home', 'about', 'projects', 'education', 'contact'].map((section) => (
-            <a
-              key={section}
-              href={`#${section}`}
-              className={activeSection === section ? 'active' : ''}
-              onClick={() => setActiveSection(section)}
-            >
-              <span className="link-text">{section.toUpperCase()}</span>
-              <span className="link-glow"></span>
-            </a>
-          ))}
+      <nav className="nav-bar">
+        <div className="nav-container">
+          <div className="nav-brand">
+            <div className="nav-logo">MN</div>
+            <span>Musala Ndouvhada</span>
+          </div>
+          <div className="nav-links">
+            {['home', 'about', 'projects', 'education', 'contact'].map((section) => (
+              <a
+                key={section}
+                href={`#${section}`}
+                className={activeSection === section ? 'active' : ''}
+                onClick={() => setActiveSection(section)}
+              >
+                {section.charAt(0).toUpperCase() + section.slice(1)}
+              </a>
+            ))}
+          </div>
         </div>
       </nav>
 
@@ -180,46 +60,25 @@ export default function App() {
       <section id="home" className="hero-section">
         <div className="hero-container">
           <div className="hero-content">
-            <div className="title-container">
-              <h1 className="holographic-title">
-                {displayText}
-                <span className={`cursor ${cursorVisible ? 'visible' : ''}`}>|</span>
-              </h1>
-              <div className="title-reflection">{displayText}</div>
-            </div>
+            <h1 className="hero-title">
+              Musala Ndouvhada
+            </h1>
             
             <div className="hero-subtitle">
-              <div className="subtitle-line">
-                <span className="cyber-text">FINAL-YEAR COMPUTER SCIENCE & MATHEMATICS</span>
-              </div>
-              <div className="subtitle-line">
-                <span className="neon-accent">FOUNDER & DIRECTOR</span>
-                <span className="cyber-text"> OF MUSALA GROUP SOFTWARE SOLUTIONS</span>
-              </div>
+              <p>Honours in Computer Science</p>
+              <p>Founder & Director of Musala Group Software Solutions</p>
             </div>
 
-            <div className="hero-stats">
-              <div className="stat-item">
-                <div className="stat-value">20</div>
-                <div className="stat-label">ACTIVE PROJECTS</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-value">∞</div>
-                <div className="stat-label">POSSIBILITIES</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-value">100%</div>
-                <div className="stat-label">PASSION</div>
-              </div>
+            <div className="hero-description">
+              Building scalable solutions and innovative software for modern challenges
             </div>
 
             <div className="hero-actions">
-              <a href="#projects" className="holographic-btn">
-                <span>EXPLORE PORTFOLIO</span>
-                <div className="btn-glow"></div>
+              <a href="#projects" className="primary-btn">
+                View Projects
               </a>
-              <a href="#contact" className="cyber-btn">
-                <span>INITIATE CONTACT</span>
+              <a href="#contact" className="secondary-btn">
+                Contact Me
               </a>
             </div>
           </div>
@@ -230,77 +89,33 @@ export default function App() {
       <section id="about" className="content-section">
         <div className="section-container">
           <div className="section-header">
-            <h2 className="section-title">ABOUT_ME</h2>
-            <div className="title-underline"></div>
+            <h2 className="section-title">About Me</h2>
+            <p className="section-subtitle">Developer & Entrepreneur</p>
           </div>
           
-          <div className="holographic-card">
-            <div className="card-content">
-              <div className="content-grid">
-                <div className="text-content">
-                  <p className="futuristic-text">
-                    I am a final-year Computer Science and Mathematics student at the University of the Witwatersrand. 
-                    My role model is Alan Turing, and I'm passionate about web development, problem-solving, 
-                    app development (Android & iOS), robotics, cybersecurity, and AI.
-                  </p>
-                  <p className="futuristic-text">
-                    Born and raised in Makhitha village, Limpopo Province, I attended Madaheni Combined School 
-                    from grade R (2010) to grade 12 (2022). Currently, I'm pursuing my passion in mathematics 
-                    and technology at Wits.
-                  </p>
-                  <p className="futuristic-text">
-                    As a software developer and entrepreneur, I create innovative digital solutions for small businesses, 
-                    schools, and communities. My mission is to leverage technology to improve education, accessibility, 
-                    and business efficiency.
-                  </p>
+          <div className="about-content">
+            <div className="about-text">
+              <p>
+                I am currently pursuing my Honours in Computer Science at the University of the Witwatersrand, 
+                having completed my BSc in Computer Science and Mathematics. My role model is Alan Turing, 
+                and I'm passionate about web development, problem-solving, app development (Android & iOS), 
+                robotics, cybersecurity, and AI.
+              </p>
+              <p>
+                As a software developer and entrepreneur, I create innovative digital solutions for small businesses, 
+                schools, and communities. My mission is to leverage technology to improve education, accessibility, 
+                and business efficiency.
+              </p>
 
-                  <div className="tech-stack">
-                    <h3>TECH STACK</h3>
-                    <div className="tech-grid">
-                      {techStack.map((tech) => (
-                        <div key={tech.name} className="tech-item">
-                          <span className="tech-icon">{tech.icon}</span>
-                          <span className="tech-name">{tech.name}</span>
-                        </div>
-                      ))}
+              <div className="tech-stack">
+                <h3>Technical Skills</h3>
+                <div className="tech-grid">
+                  {techStack.map((tech) => (
+                    <div key={tech.name} className="tech-item">
+                      <span className="tech-icon">{tech.icon}</span>
+                      <span className="tech-name">{tech.name}</span>
                     </div>
-                  </div>
-                </div>
-                <div className="visual-content">
-                  <div className="hologram-display">
-                    <div className="hologram-content">
-                      <div className="data-point">
-                        <span className="data-label">TECH STACK</span>
-                        <div className="data-bar">
-                          <div className="data-fill" style={{width: '85%'}}></div>
-                        </div>
-                      </div>
-                      <div className="data-point">
-                        <span className="data-label">AI/ML</span>
-                        <div className="data-bar">
-                          <div className="data-fill" style={{width: '78%'}}></div>
-                        </div>
-                      </div>
-                      <div className="data-point">
-                        <span className="data-label">CYBERSECURITY</span>
-                        <div className="data-bar">
-                          <div className="data-fill" style={{width: '70%'}}></div>
-                        </div>
-                      </div>
-                      <div className="data-point">
-                        <span className="data-label">WEB DEVELOPMENT</span>
-                        <div className="data-bar">
-                          <div className="data-fill" style={{width: '90%'}}></div>
-                        </div>
-                      </div>
-                      <div className="data-point">
-                        <span className="data-label">MOBILE DEVELOPMENT</span>
-                        <div className="data-bar">
-                          <div className="data-fill" style={{width: '75%'}}></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -309,35 +124,27 @@ export default function App() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="content-section">
+      <section id="projects" className="content-section bg-light">
         <div className="section-container">
           <div className="section-header">
-            <h2 className="section-title">PROJECTS</h2>
-            <div className="title-underline"></div>
+            <h2 className="section-title">Projects</h2>
+            <p className="section-subtitle">Selected Work & Deployed Applications</p>
           </div>
           
           <div className="projects-grid">
-            {projects.map((project, index) => (
-              <div key={project.url} className="project-card" style={{animationDelay: `${index * 0.1}s`}}>
-                <div className="card-header">
+            {projects.map((project) => (
+              <div key={project.url} className="project-card">
+                <div className="card-content">
                   <h3>{project.name}</h3>
-                  <div className="status-indicator">
-                    <div className="status-dot"></div>
-                    <span>ONLINE</span>
+                  <p className="project-description">
+                    Innovative solution showcasing software engineering and design principles.
+                  </p>
+                  <div className="card-footer">
+                    <a href={project.url} target="_blank" rel="noopener noreferrer" className="project-link">
+                      View Project →
+                    </a>
                   </div>
                 </div>
-                <div className="card-body">
-                  <div className="project-description">
-                    Innovative solution showcasing some of the my software and design.
-                  </div>
-                </div>
-                <div className="card-footer">
-                  <a href={project.url} target="_blank" rel="noopener noreferrer" className="project-link">
-                    <span>ACCESS SYSTEM</span>
-                    <div className="link-arrow">→</div>
-                  </a>
-                </div>
-                <div className="card-glow"></div>
               </div>
             ))}
           </div>
@@ -348,39 +155,48 @@ export default function App() {
       <section id="education" className="content-section">
         <div className="section-container">
           <div className="section-header">
-            <h2 className="section-title">EDUCATION</h2>
-            <div className="title-underline"></div>
+            <h2 className="section-title">Education</h2>
+            <p className="section-subtitle">Academic Journey</p>
           </div>
           
-          <div className="timeline">
-            <div className="timeline-item">
-              <div className="timeline-marker">
-                <div className="marker-glow"></div>
-              </div>
-              <div className="timeline-content">
-                <div className="timeline-date">2022 - PRESENT</div>
-                <h3>UNIVERSITY OF THE WITWATERSRAND</h3>
-                <p>BSc Computer Science & Mathematics</p>
-                <div className="timeline-tech">
-                  <span className="tech-tag">AI/ML</span>
-                  <span className="tech-tag">CYBERSECURITY</span>
-                  <span className="tech-tag">ADVANCED MATHEMATICS</span>
-                  <span className="tech-tag">SOFTWARE ENGINEERING</span>
+          <div className="education-timeline">
+            <div className="education-item">
+              <div className="education-date">2024 - Present</div>
+              <div className="education-content">
+                <h3>Honours in Computer Science</h3>
+                <p className="education-institution">University of the Witwatersrand</p>
+                <div className="education-tags">
+                  <span className="tag">Advanced Algorithms</span>
+                  <span className="tag">Machine Learning</span>
+                  <span className="tag">Research Methods</span>
                 </div>
               </div>
             </div>
-            <div className="timeline-item">
-              <div className="timeline-marker">
-                <div className="marker-glow"></div>
+            
+            <div className="education-item">
+              <div className="education-date">2020 - 2023</div>
+              <div className="education-content">
+                <h3>BSc Computer Science & Mathematics</h3>
+                <p className="education-institution">University of the Witwatersrand</p>
+                <p className="education-status">Graduated</p>
+                <div className="education-tags">
+                  <span className="tag">Software Engineering</span>
+                  <span className="tag">Artificial Intelligence</span>
+                  <span className="tag">Data Structures</span>
+                  <span className="tag">Calculus</span>
+                </div>
               </div>
-              <div className="timeline-content">
-                <div className="timeline-date">2010 - 2022</div>
-                <h3>MADAHENI COMBINED SCHOOL</h3>
-                <p>Grade R to Grade 12</p>
-                <div className="timeline-tech">
-                  <span className="tech-tag">FOUNDATION EDUCATION</span>
-                  <span className="tech-tag">STEM FOCUS</span>
-                  <span className="tech-tag">MATHEMATICS & SCIENCE</span>
+            </div>
+
+            <div className="education-item">
+              <div className="education-date">2010 - 2022</div>
+              <div className="education-content">
+                <h3>Madaheni Combined School</h3>
+                <p className="education-institution">Grade R to Grade 12</p>
+                <div className="education-tags">
+                  <span className="tag">Mathematics</span>
+                  <span className="tag">Physical Science</span>
+                  <span className="tag">Computer Applications</span>
                 </div>
               </div>
             </div>
@@ -389,57 +205,52 @@ export default function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="content-section">
+      <section id="contact" className="content-section bg-light">
         <div className="section-container">
           <div className="section-header">
-            <h2 className="section-title">CONTACT</h2>
-            <div className="title-underline"></div>
+            <h2 className="section-title">Contact</h2>
+            <p className="section-subtitle">Let's Connect</p>
           </div>
           
           <div className="contact-grid">
-            <div className="contact-card">
+            <div className="contact-item">
               <div className="contact-icon">📧</div>
-              <h3>EMAIL</h3>
-              <a href="mailto:solomonndouvhada@gmail.com">solomonndouvhada@gmail.com</a>
-              <div className="contact-glow"></div>
+              <h3>Email</h3>
+              <a href="mailto:solomonndouvhada@gmail.com" className="contact-link">
+                solomonndouvhada@gmail.com
+              </a>
             </div>
-            <div className="contact-card">
+            <div className="contact-item">
               <div className="contact-icon">💼</div>
-              <h3>LINKEDIN</h3>
-              <a href="https://linkedin.com/in/musala-ndouvhada-78bb892b9/" target="_blank" rel="noopener noreferrer">
+              <h3>LinkedIn</h3>
+              <a href="https://linkedin.com/in/musala-ndouvhada-78bb892b9/" target="_blank" rel="noopener noreferrer" className="contact-link">
                 Connect Professionally
               </a>
-              <div className="contact-glow"></div>
             </div>
-            <div className="contact-card">
+            <div className="contact-item">
               <div className="contact-icon">⚡</div>
-              <h3>GITHUB</h3>
-              <a href="https://github.com/Musala001/" target="_blank" rel="noopener noreferrer">
-                Explore Code
+              <h3>GitHub</h3>
+              <a href="https://github.com/Musala001/" target="_blank" rel="noopener noreferrer" className="contact-link">
+                View Code & Projects
               </a>
-              <div className="contact-glow"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="holographic-footer">
-        <div className="footer-content">
-          <div className="footer-main">
-            <div className="footer-brand">
-              <div className="footer-logo">MN</div>
-              <span>MUSALA NDOUVHADA</span>
-            </div>
-            <div className="footer-text">
-              © {new Date().getFullYear()} MUSALA NDOUVHADA. ALL SYSTEMS OPERATIONAL.
-            </div>
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-brand">
+            <div className="footer-logo">MN</div>
+            <span>Musala Ndouvhada</span>
+          </div>
+          <div className="footer-text">
+            © {new Date().getFullYear()} Musala Ndouvhada. All rights reserved.
           </div>
           <div className="footer-status">
-            <div className="status-indicator">
-              <div className="pulse-dot"></div>
-              <span>CONNECTION ACTIVE</span>
-            </div>
+            <div className="status-dot"></div>
+            <span>Available for opportunities</span>
           </div>
         </div>
       </footer>
