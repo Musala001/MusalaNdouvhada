@@ -14,9 +14,10 @@ const projects = [
     description: "A website that puts useful AI tools in one place, so anyone can use them without knowing how they work.",
   },
   {
-    name: "ShiftCiphers",
-    url: "https://musalashiftciphers.onrender.com",
-    description: "A small app for encrypting and decrypting messages with a shift cipher.",
+    name: "Cryptography Explorer",
+    url: "https://one-big-project.vercel.app/",
+    description:
+      "An interactive walk through cryptography, from the Caesar and Vigenère ciphers up to RSA, ElGamal and Diffie-Hellman. Every method comes with a working example you can try yourself.",
   },
 ];
 
