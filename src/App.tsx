@@ -1,256 +1,298 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 const projects = [
-  { name: "ChatApp", url: "https://musala.onrender.com" },
-  { name: "React-Dog-API", url: "https://musalareactdogapi.onrender.com" },
-  { name: "Random-Quotes-API", url: "https://musalsrandomquotesapi.onrender.com" },
-  { name: "Dictionary App", url: "https://musalsdictionaryapp.onrender.com" },
-  { name: "Simple Chat", url: "https://musalssimplechat.onrender.com" },
-  { name: "Chat 4.0", url: "https://musalschat4-0.onrender.com" },
-  { name: "Shift Ciphers", url: "https://musalashiftciphers.onrender.com" },
-  { name: "Wanga Study Resources", url: "https://wanga-study-resources.onrender.com" },
-  { name: "Seeing Beyond AI", url: "https://seeing-beyond-ai.vercel.app/" },
-  { name: "University Research Collaboration", url: "https://unirescollab-a0bgfbhzcfg6angs.southafricanorth-01.azurewebsites.net/" },
-  { name: "Medical Control", url: "https://musala001.github.io/Medical-Control/" },
+  {
+    name: "Smart Cable Guard",
+    url: "https://smart-cable-guard.vercel.app/",
+    description:
+      "Cameras on trains watch the overhead cables, and computer vision flags any damage before it causes delays. Every problem it finds gets a GPS location and is checked by a person.",
+  },
+  {
+    name: "Seeing Beyond AI",
+    url: "https://seeing-beyond-ai.vercel.app/",
+    description: "A website that puts useful AI tools in one place, so anyone can use them without knowing how they work.",
+  },
+  {
+    name: "ShiftCiphers",
+    url: "https://musalashiftciphers.onrender.com",
+    description: "A small app for encrypting and decrypting messages with a shift cipher.",
+  },
 ];
 
-const techStack = [
-  { name: "Java", icon: "☕" },
-  { name: "C++", icon: "⚡" },
-  { name: "Python", icon: "🐍" },
-  { name: "JavaScript", icon: "📜" },
-  { name: "C", icon: "🔧" },
-  { name: "React JS", icon: "⚛️" },
-  { name: "Node JS", icon: "🟢" },
-  { name: "CSS", icon: "🎨" },
-  { name: "HTML", icon: "🌐" },
-  { name: "Tailwind CSS", icon: "💨" }
+const education = [
+  {
+    date: "2026 — Present",
+    title: "Honours in Computer Science",
+    place: "University of the Witwatersrand",
+    tags: [
+      "Adaptive Computation and Machine Learning",
+      "Research in Machine Learning",
+      "Probabilistic Graphical Models",
+      "Robotics",
+      "Artificial Intelligence",
+      "Reinforcement Learning",
+      "Applications of Algorithms",
+      "Discrete Optimization",
+    ],
+  },
+  {
+    date: "2023 — 2025",
+    title: "BSc Computer Science & Mathematics",
+    place: "University of the Witwatersrand",
+    status: "Graduated",
+    tags: ["Double major in Computer Science III and Mathematics III"],
+  },
+  {
+    date: "2010 — 2022",
+    title: "Madaheni Combined School",
+    place: "Grade R to Grade 12",
+    tags: ["Mathematics", "Physical Science", "Computer Applications"],
+  },
 ];
+
+const contacts = [
+  { label: "Email", value: "solomonndouvhada@gmail.com", href: "mailto:solomonndouvhada@gmail.com" },
+  { label: "LinkedIn", value: "musala-ndouvhada", href: "https://linkedin.com/in/musala-ndouvhada-78bb892b9/" },
+  { label: "GitHub", value: "Musala001", href: "https://github.com/Musala001/" },
+];
+
+const sections = ["about", "projects", "education", "contact"];
+
+const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, "");
+
+// Fade/slide elements with [data-reveal] into view once as they enter the viewport.
+function useReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      els.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+}
+
+// Track which section is currently in view for nav highlighting.
+function useActiveSection() {
+  const [active, setActive] = useState("");
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    ["home", ...sections].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+  return active;
+}
+
+function SectionHeader({ title, intro }: { title: string; intro?: string }) {
+  return (
+    <div className="section-header" data-reveal>
+      <h2 className="section-title">{title}</h2>
+      {intro && <p className="section-intro">{intro}</p>}
+    </div>
+  );
+}
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState("home");
+  const active = useActiveSection();
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  useReveal();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <div className="app-container">
-      {/* Navigation */}
-      <nav className="nav-bar">
-        <div className="nav-container">
-          <div className="nav-brand">
-            <div className="nav-logo">MN</div>
-            <span>Musala Ndouvhada</span>
-          </div>
+    <div className="app">
+      <nav className={`nav ${scrolled ? "nav--scrolled" : ""} ${menuOpen ? "nav--open" : ""}`}>
+        <div className="nav-inner">
+          <a href="#home" className="brand" onClick={() => setMenuOpen(false)}>
+            <span className="brand-mark">MN</span>
+            <span className="brand-name">Musala Ndouvhada</span>
+          </a>
           <div className="nav-links">
-            {['home', 'about', 'projects', 'education', 'contact'].map((section) => (
+            {sections.map((s) => (
               <a
-                key={section}
-                href={`#${section}`}
-                className={activeSection === section ? 'active' : ''}
-                onClick={() => setActiveSection(section)}
+                key={s}
+                href={`#${s}`}
+                className={active === s ? "active" : ""}
+                onClick={() => setMenuOpen(false)}
               >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
+                {s.charAt(0).toUpperCase() + s.slice(1)}
               </a>
             ))}
+            <a href="#contact" className="btn btn--primary btn--sm nav-cta" onClick={() => setMenuOpen(false)}>
+              Get in touch
+            </a>
           </div>
+          <button
+            className="menu-toggle"
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            <span />
+            <span />
+          </button>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section id="home" className="hero-section">
-        <div className="hero-container">
-          <div className="hero-content">
-            <h1 className="hero-title">
-              Musala Ndouvhada
+      <main>
+        <section id="home" className="hero">
+          <div className="hero-glow" aria-hidden="true" />
+          <div className="container hero-inner">
+            <span className="pill" data-reveal>
+              <span className="pill-dot" />
+              Available for new projects
+            </span>
+            <h1 className="hero-title" data-reveal>
+              Software <span className="accent">engineer.</span>
             </h1>
-            
-            <div className="hero-subtitle">
-              <p>Honours in Computer Science</p>
-              <p>Founder & Director of Musala Group Software Solutions</p>
-            </div>
-
-            <div className="hero-description">
-              Building scalable solutions and innovative software for modern challenges
-            </div>
-
-            <div className="hero-actions">
-              <a href="#projects" className="primary-btn">
-                View Projects
+            <p className="hero-lead" data-reveal>
+              I'm Musala Ndouvhada. I have a BSc in Computer Science and Mathematics from Wits, and I'm now
+              doing my Honours in Computer Science there.
+            </p>
+            <div className="hero-actions" data-reveal>
+              <a
+                href="https://github.com/Musala001/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn--primary"
+              >
+                See my work on GitHub <span aria-hidden="true">↗</span>
               </a>
-              <a href="#contact" className="secondary-btn">
-                Contact Me
+              <a href="#contact" className="btn btn--ghost">
+                Contact me
               </a>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* About Section */}
-      <section id="about" className="content-section">
-        <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">About Me</h2>
-            <p className="section-subtitle">Developer & Entrepreneur</p>
-          </div>
-          
-          <div className="about-content">
-            <div className="about-text">
+        <section id="about" className="section">
+          <div className="container about">
+            <SectionHeader title="About me" />
+            <div className="about-copy" data-reveal>
               <p>
-                I am currently pursuing my Honours in Computer Science at the University of the Witwatersrand, 
-                having completed my BSc in Computer Science and Mathematics. My role model is Alan Turing, 
-                and I'm passionate about web development, problem-solving, app development (Android & iOS), 
-                robotics, cybersecurity, and AI.
+                I love Java. It's the first thing I reach for when I want to build something
+                properly, though I'll happily use whatever else a project needs.
               </p>
               <p>
-                As a software developer and entrepreneur, I create innovative digital solutions for small businesses, 
-                schools, and communities. My mission is to leverage technology to improve education, accessibility, 
-                and business efficiency.
+                More than any language, I love solving problems. Give me something that doesn't
+                work yet and I'll keep at it until it does. That's what got me into computer
+                science in the first place.
               </p>
-
-              <div className="tech-stack">
-                <h3>Technical Skills</h3>
-                <div className="tech-grid">
-                  {techStack.map((tech) => (
-                    <div key={tech.name} className="tech-item">
-                      <span className="tech-icon">{tech.icon}</span>
-                      <span className="tech-name">{tech.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <p>
+                Away from the keyboard, I follow politics closely and I love a good story, whether
+                I'm reading one or telling one. And I spend a lot of time on AI and where computer
+                science is going next.
+              </p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="content-section bg-light">
-        <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">Projects</h2>
-            <p className="section-subtitle">Selected Work & Deployed Applications</p>
-          </div>
-          
-          <div className="projects-grid">
-            {projects.map((project) => (
-              <div key={project.url} className="project-card">
-                <div className="card-content">
-                  <h3>{project.name}</h3>
-                  <p className="project-description">
-                    Innovative solution showcasing software engineering and design principles.
-                  </p>
-                  <div className="card-footer">
-                    <a href={project.url} target="_blank" rel="noopener noreferrer" className="project-link">
-                      View Project →
-                    </a>
+        <section id="projects" className="section section--tinted">
+          <div className="container">
+            <SectionHeader title="Projects" intro="A few things I've built and put online." />
+            <div className="projects-grid">
+              {projects.map((project, i) => (
+                <a
+                  key={project.url}
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="card"
+                  data-reveal
+                  style={{ transitionDelay: `${i * 70}ms` }}
+                >
+                  <div className="card-top">
+                    <h3 className="card-title">{project.name}</h3>
+                    <span className="card-arrow" aria-hidden="true">↗</span>
                   </div>
-                </div>
-              </div>
-            ))}
+                  <p className="card-desc">{project.description}</p>
+                  <span className="card-host">{hostOf(project.url)}</span>
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Education Section */}
-      <section id="education" className="content-section">
-        <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">Education</h2>
-            <p className="section-subtitle">Academic Journey</p>
+        <section id="education" className="section">
+          <div className="container">
+            <SectionHeader title="Education" />
+            <ol className="edu-list">
+              {education.map((item) => (
+                <li key={item.title} className="edu-item" data-reveal>
+                  <span className="edu-date">{item.date}</span>
+                  <div>
+                    <h3 className="edu-title">
+                      {item.title}
+                      {item.status && <span className="badge">{item.status}</span>}
+                    </h3>
+                    <p className="edu-place">{item.place}</p>
+                    <p className="edu-tags">{item.tags.join(", ")}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
-          
-          <div className="education-timeline">
-            <div className="education-item">
-              <div className="education-date">2026 - Present</div>
-              <div className="education-content">
-                <h3>Honours in Computer Science</h3>
-                <p className="education-institution">University of the Witwatersrand</p>
-                <div className="education-tags">
-                  <span className="tag">Advanced Algorithms</span>
-                  <span className="tag">Machine Learning</span>
-                  <span className="tag">Research Methods</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="education-item">
-              <div className="education-date">2023 - 2025</div>
-              <div className="education-content">
-                <h3>BSc Computer Science & Mathematics</h3>
-                <p className="education-institution">University of the Witwatersrand</p>
-                <p className="education-status">Graduated</p>
-                <div className="education-tags">
-                  <span className="tag">Software Engineering</span>
-                  <span className="tag">Artificial Intelligence</span>
-                  <span className="tag">Data Structures</span>
-                  <span className="tag">Calculus</span>
-                </div>
-              </div>
-            </div>
+        </section>
 
-            <div className="education-item">
-              <div className="education-date">2010 - 2022</div>
-              <div className="education-content">
-                <h3>Madaheni Combined School</h3>
-                <p className="education-institution">Grade R to Grade 12</p>
-                <div className="education-tags">
-                  <span className="tag">Mathematics</span>
-                  <span className="tag">Physical Science</span>
-                  <span className="tag">Computer Applications</span>
-                </div>
-              </div>
+        <section id="contact" className="section section--tinted">
+          <div className="container">
+            <SectionHeader
+              title="Get in touch"
+              intro="Want to work together, or just talk about something on this page? Send me an email."
+            />
+            <div className="contact-list">
+              {contacts.map((c) => (
+                <a
+                  key={c.label}
+                  href={c.href}
+                  target={c.href.startsWith("http") ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                  className="contact-row"
+                  data-reveal
+                >
+                  <span className="contact-label">{c.label}</span>
+                  <span className="contact-value">{c.value}</span>
+                  <span className="contact-arrow" aria-hidden="true">→</span>
+                </a>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* Contact Section */}
-      <section id="contact" className="content-section bg-light">
-        <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">Contact</h2>
-            <p className="section-subtitle">Let's Connect</p>
-          </div>
-          
-          <div className="contact-grid">
-            <div className="contact-item">
-              <div className="contact-icon">📧</div>
-              <h3>Email</h3>
-              <a href="mailto:solomonndouvhada@gmail.com" className="contact-link">
-                solomonndouvhada@gmail.com
-              </a>
-            </div>
-            <div className="contact-item">
-              <div className="contact-icon">💼</div>
-              <h3>LinkedIn</h3>
-              <a href="https://linkedin.com/in/musala-ndouvhada-78bb892b9/" target="_blank" rel="noopener noreferrer" className="contact-link">
-                Connect Professionally
-              </a>
-            </div>
-            <div className="contact-item">
-              <div className="contact-icon">⚡</div>
-              <h3>GitHub</h3>
-              <a href="https://github.com/Musala001/" target="_blank" rel="noopener noreferrer" className="contact-link">
-                View Code & Projects
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
       <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-brand">
-            <div className="footer-logo">MN</div>
-            <span>Musala Ndouvhada</span>
-          </div>
-          <div className="footer-text">
-            © {new Date().getFullYear()} Musala Ndouvhada. All rights reserved.
-          </div>
-          <div className="footer-status">
-            <div className="status-dot"></div>
-            <span>Available for opportunities</span>
-          </div>
+        <div className="container footer-inner">
+          <span>© {new Date().getFullYear()} Musala Ndouvhada</span>
+          <a href="#home">Back to top ↑</a>
         </div>
       </footer>
     </div>
